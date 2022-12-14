@@ -72,8 +72,8 @@ void connectMQTT(){
     Serial.printf("Connecting to MQTT BROKER: %s\n", BROKER);
     if(mqttClient.connect(ID_MQTT)){
       Serial.println("Successfully connected to Broker!");
-      Serial.printf("Subscribed to topic: '%s'\n", TOPIC);
-      mqttClient.subscribe(TOPIC);
+      Serial.printf("Subscribed to topic: '%s'\n", BADROOM_TOPIC);
+      mqttClient.subscribe(BADROOM_TOPIC);
     }
     else {
       Serial.println("Unable to connect to Broker");
@@ -86,8 +86,6 @@ void connectMQTT(){
 void receiveData(char* topic, byte* payload, unsigned int length){
   String message;
 
-  Serial.println(topic);
-
   // getting the payload string
   for(int i = 0; i < length; i++){
     char c = (char)payload[i];
@@ -95,9 +93,9 @@ void receiveData(char* topic, byte* payload, unsigned int length){
   }
 
   if(message == "OFF"){
-    digitalWrite(pinLamp, LOW);
+    digitalWrite(pinLamp, HIGH);
   }
   if(message == "ON"){
-    digitalWrite(pinLamp, HIGH);
+    digitalWrite(pinLamp, LOW);
   }
 }
