@@ -80,7 +80,7 @@ void connectMQTT(){
   }
 }
 
-int sendData(){
+void sendData(){
   if(getSwitchState()) {
     Serial.printf("Lamp ON! Publishing topic: %s\n", TOPIC);
     mqttClient.publish(TOPIC, "ON");
