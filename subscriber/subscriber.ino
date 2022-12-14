@@ -1,7 +1,7 @@
 #include <ESP8266WiFi.h>
 #include <PubSubClient.h>
 
-#define pinLamp 2
+#define pinLamp 2 // D4
 
 // WiFi
 const char* SSID = "Zeus";
@@ -12,9 +12,11 @@ WiFiClient wifiClient;
 const char* BROKER = "mqtt.eclipseprojects.io";
 int PORT = 1883;
 
-#define ID_MQTT "BCI02"
-#define TOPIC "BCIButton"
-PubSubClient MQTT(wifiClient);
+#define ID_MQTT "MGxomm2esd"
+#define BADROOM_TOPIC "home/bedroom/lamp"
+#define TANK_TOPIC "home/tank/level"
+#define GARDEN_TOPIC "home/garden/moisture"
+PubSubClient mqttClient(wifiClient);
 
 // Funtion prototypes
 void keepConnection();
@@ -28,17 +30,18 @@ void setup() {
   Serial.begin(115200);
 
   connectWiFi();
-  MQTT.setServer(BROKER, PORT);
-  MQTT.setCallback(receiveData);
+
+  mqttClient.setServer(BROKER, PORT);
+  mqttClient.setCallback(receiveData);
 }
 
 void loop() {
   keepConnection();
-  MQTT.loop();
+  mqttClient.loop();
 }
 
 void keepConnection(){
-  if(!MQTT.connected()) {
+  if(!mqttClient.connected()) {
     connectMQTT();
   }
 
@@ -50,28 +53,27 @@ void connectWiFi(){
     return;
   }
 
-  Serial.print("Connecting to WiFi: ");
-  Serial.print(SSID);
+  Serial.printf("Connecting to WiFi: %s\n", SSID);
 
   WiFi.begin(SSID, PASSWORD);
   while(WiFi.status() != WL_CONNECTED){
-    delay(100);
+    delay(400);
     Serial.print(".");
   }
 
   Serial.println();
-  Serial.print("Successfully connected to ");
-  Serial.print(SSID);
+  Serial.printf("Successfully connected to %s\n", SSID);
   Serial.print("IP: ");
   Serial.println(WiFi.localIP());
 }
 
 void connectMQTT(){
-  while(!MQTT.connected()){
-    Serial.print("Connecting to MQTT BROKER: ");
-    Serial.println(BROKER);
-    if(MQTT.connect(ID_MQTT)){
+  while(!mqttClient.connected()){
+    Serial.printf("Connecting to MQTT BROKER: %s\n", BROKER);
+    if(mqttClient.connect(ID_MQTT)){
       Serial.println("Successfully connected to Broker!");
+      Serial.printf("Subscribed to topic: '%s'\n", TOPIC);
+      mqttClient.subscribe(TOPIC);
     }
     else {
       Serial.println("Unable to connect to Broker");
@@ -84,18 +86,18 @@ void connectMQTT(){
 void receiveData(char* topic, byte* payload, unsigned int length){
   String message;
 
+  Serial.println(topic);
+
   // getting the payload string
   for(int i = 0; i < length; i++){
     char c = (char)payload[i];
     message += c;
   }
 
-  Serial.println(message);
-
-  if(message == "0"){
+  if(message == "OFF"){
     digitalWrite(pinLamp, LOW);
   }
-  if(message == "1"){
+  if(message == "ON"){
     digitalWrite(pinLamp, HIGH);
   }
 }
