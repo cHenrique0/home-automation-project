@@ -98,4 +98,13 @@ void receiveData(char* topic, byte* payload, unsigned int length){
   if(message == "ON"){
     digitalWrite(pinLamp, LOW);
   }
+  if(message == "MAX") {
+    Serial.println("TANK MAX");
+  }
+  if(message == "MIN") {
+    Serial.println("TANK MIN");
+  }
+  if(message == "EMPTY") {
+    Serial.println("TANK EMPTY");
+  }
 }

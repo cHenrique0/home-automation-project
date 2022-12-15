@@ -1,7 +1,9 @@
 #include <ESP8266WiFi.h>
 #include <PubSubClient.h>
 
-#define pinSwitch 12                              // Pin D6
+#define pinMaxLevel 5                             // Pin D1
+#define pinMinLevel 4                             // Pin D2
+bool maxLevel, minLevel;
 
 // WiFi
 const char* SSID = "Zeus";                        // WiFi name
@@ -12,7 +14,7 @@ WiFiClient wifiClient;                            // WiFi client
 const char* BROKER = "mqtt.eclipseprojects.io";   // MQTT host
 const int PORT = 1883;                            // MQTT port
 #define ID_MQTT "nehlZUXd2i"                      // Client ID
-#define TOPIC "home/bedroom/lamp"                 // Topic published
+#define TOPIC "home/backyard/tank"                 // Topic published
 PubSubClient mqttClient(wifiClient);              // MQTT client
 
 // Functions prototypes
@@ -20,10 +22,10 @@ void keepConnection();
 void connectWiFi();
 void connectMQTT();
 void sendData();
-bool getSwitchState();
 
 void setup() {
-  pinMode(pinSwitch, INPUT_PULLUP);
+  pinMode(pinMaxLevel, INPUT_PULLUP);
+  pinMode(pinMinLevel, INPUT_PULLUP);
 
   Serial.begin(115200);
 
@@ -81,46 +83,22 @@ void connectMQTT(){
 }
 
 void sendData(){
-  if(getSwitchState()) {
-    Serial.printf("Lamp ON! Publishing topic: %s\n", TOPIC);
-    mqttClient.publish(TOPIC, "ON");
-  } else {
-    Serial.printf("Lamp OFF! Publishing topic: %s\n", TOPIC);
-    mqttClient.publish(TOPIC, "OFF");
+  maxLevel = digitalRead(pinMaxLevel);
+  minLevel = digitalRead(pinMinLevel);
+
+  if(maxLevel && minLevel) {
+    Serial.println("The tank is at maximum level!");
+    // Serial.printf("Publishing topic: %s\n", TOPIC);
+    mqttClient.publish(TOPIC, "MAX");
+  }
+  else if(maxLevel == 0 && minLevel) {
+    Serial.println("The tank is at minimum level!");
+    // Serial.printf("Publishing topic: %s\n", TOPIC);
+    mqttClient.publish(TOPIC, "MIN");
+  }
+  else if (maxLevel == 0 && minLevel == 0) {
+    Serial.println("Alert! The tank is empty!");
+    // Serial.printf("Publishing topic: %s\n", TOPIC);
+    mqttClient.publish(TOPIC, "EMPTY");
   }
 }
-
-bool getSwitchState(){
-  const int debounce = 50;
-  static bool switchState;
-  static bool previousSwitchState;
-  static bool saveSwitchState = true;
-  static unsigned long switchDelay = 0;
-
-  if( (millis() - switchDelay) > debounce ) {
-    switchState = digitalRead(pinSwitch);
-    if( switchState && (switchState != previousSwitchState) ) {
-      saveSwitchState = !saveSwitchState;
-      switchDelay = millis();
-    }
-    previousSwitchState = switchState;
-  }
-
-  return saveSwitchState;
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
