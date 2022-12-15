@@ -99,12 +99,14 @@ void receiveData(char* topic, byte* payload, unsigned int length){
     message += c;
   }
 
+  // Lamp state
   if(message == "OFF"){
     digitalWrite(pinLamp, HIGH);
   }
   if(message == "ON"){
     digitalWrite(pinLamp, LOW);
   }
+  // Level
   if(message == "MAX") {
     Serial.println("TANK MAX");
   }
@@ -115,6 +117,7 @@ void receiveData(char* topic, byte* payload, unsigned int length){
     Serial.println("TANK EMPTY");
   }
   else {
+    // temperature and humidity
     Serial.println(message);
   }
 }
