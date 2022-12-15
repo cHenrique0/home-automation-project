@@ -15,7 +15,7 @@ int PORT = 1883;
 #define ID_MQTT "MGxomm2esd"
 #define BADROOM_TOPIC "home/bedroom/lamp"
 #define TANK_TOPIC "home/backyard/tank"
-#define GARDEN_TOPIC "home/garden/moisture"
+#define TEMP_HUM_TOPIC "home/living_room/temp_hum"
 PubSubClient mqttClient(wifiClient);
 
 // Funtion prototypes
@@ -76,6 +76,8 @@ void connectMQTT(){
       mqttClient.subscribe(BADROOM_TOPIC);
       Serial.printf("Subscribed to topic: '%s'\n", TANK_TOPIC);
       mqttClient.subscribe(TANK_TOPIC);
+      Serial.printf("Subscribed to topic: '%s'\n", TEMP_HUM_TOPIC);
+      mqttClient.subscribe(TEMP_HUM_TOPIC);
     }
     else {
       Serial.println("Unable to connect to Broker");
@@ -93,6 +95,8 @@ void receiveData(char* topic, byte* payload, unsigned int length){
     char c = (char)payload[i];
     message += c;
   }
+
+  Serial.println(message);
 
   if(message == "OFF"){
     digitalWrite(pinLamp, HIGH);
