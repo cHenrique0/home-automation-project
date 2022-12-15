@@ -94,8 +94,8 @@ void sendData(){
   double temp = getTemperature();
   double hum = getHumidity();
 
-  sprintf(msgTemp, "%f", temp);
-  sprintf(msgHum, "%f", hum);
+  sprintf(msgTemp, "%.2f", temp);
+  sprintf(msgHum, "%.2f", hum);
 
   Serial.printf("Publishing topic: %s\n", TEMP_TOPIC);
   mqttClient.publish(TEMP_TOPIC, msgTemp);
