@@ -13,7 +13,7 @@ WiFiClient wifiClient;                            // WiFi client
 // MQTT server
 const char* BROKER = "mqtt.eclipseprojects.io";   // MQTT host
 const int PORT = 1883;                            // MQTT port
-#define ID_MQTT "nehlZUXd2i"                      // Client ID
+#define ID_MQTT "red7nawuLL"                      // Client ID
 #define TOPIC "home/backyard/tank"                 // Topic published
 PubSubClient mqttClient(wifiClient);              // MQTT client
 
