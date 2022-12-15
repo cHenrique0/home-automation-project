@@ -4,8 +4,8 @@
 #define pinLamp 2 // D4
 
 // WiFi
-const char* SSID = "Zeus";
-const char* PASSWORD = "chva2008";
+const char* SSID = "**********";
+const char* PASSWORD = "**********";
 WiFiClient wifiClient;
 
 // MQTT Server
@@ -118,6 +118,7 @@ void receiveData(char* topic, byte* payload, unsigned int length){
   }
   else {
     // temperature and humidity
+    Serial.print("Temperatue and Humidity: ")
     Serial.println(message);
   }
 }

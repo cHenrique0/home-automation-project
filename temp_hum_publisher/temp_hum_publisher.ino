@@ -9,8 +9,8 @@
 DHT dht(DTH11, DHT_TYPE);
 
 // WiFi
-const char* SSID = "Zeus";                        // WiFi name
-const char* PASSWORD = "chva2008";                // WiFi pass
+const char* SSID = "**********";                  // WiFi name
+const char* PASSWORD = "**********";              // WiFi pass
 WiFiClient wifiClient;                            // WiFi client
 
 // MQTT server

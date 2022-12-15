@@ -6,8 +6,8 @@
 bool maxLevel, minLevel;
 
 // WiFi
-const char* SSID = "Zeus";                        // WiFi name
-const char* PASSWORD = "chva2008";                // WiFi pass
+const char* SSID = "**********";                        // WiFi name
+const char* PASSWORD = "**********";                // WiFi pass
 WiFiClient wifiClient;                            // WiFi client
 
 // MQTT server
