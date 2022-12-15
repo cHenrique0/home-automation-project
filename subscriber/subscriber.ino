@@ -74,6 +74,8 @@ void connectMQTT(){
       Serial.println("Successfully connected to Broker!");
       Serial.printf("Subscribed to topic: '%s'\n", BADROOM_TOPIC);
       mqttClient.subscribe(BADROOM_TOPIC);
+      Serial.printf("Subscribed to topic: '%s'\n", TANK_TOPIC);
+      mqttClient.subscribe(TANK_TOPIC);
     }
     else {
       Serial.println("Unable to connect to Broker");
