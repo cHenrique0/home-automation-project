@@ -14,7 +14,7 @@ int PORT = 1883;
 
 #define ID_MQTT "MGxomm2esd"
 #define BADROOM_TOPIC "home/bedroom/lamp"
-#define TANK_TOPIC "home/tank/level"
+#define TANK_TOPIC "home/backyard/tank"
 #define GARDEN_TOPIC "home/garden/moisture"
 PubSubClient mqttClient(wifiClient);
 
