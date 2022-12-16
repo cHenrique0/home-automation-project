@@ -24,7 +24,7 @@ To work, the MQTT protocol uses a publish/subscribe model where it allows the cl
   * [ESP8266](#read-more)
   * Breadboards
   * Jumpers
-  * Rele
+  * Relay
   * Lamp
   * DHT11
   * Level sensor
@@ -71,9 +71,23 @@ Set up your WiFi info at the beginning of each `.ino` file:
 ![wifi](images/arduino/wifi.png)
 In the start of each file `.ino`
 
-#### 2. Upload the code to ESP8266 modules
+#### 2. Mounting the circuits
 
-#### 3. Open the Serial to monitoring the MQTT in action
+##### 2.1 Subscribe
+
+![subscribe](./images/simulation/subscribe.png)
+
+##### 2.2 Lamp Publisher
+
+![lamp-publisher](./images/simulation/lamp_publisher_circuit.png)
+
+##### 2.3 Temperature and Humidity Publisher
+
+![temp-hum-publisher](./images/simulation/temp_hum_publisher_circuit.png)
+
+#### 3. Upload the code to ESP8266 modules
+
+#### 4. Open the Serial to monitoring the MQTT in action
 
 ## Read more <a id="read-more"></a>
 * [Arduino](https://www.arduino.cc/en/software)
